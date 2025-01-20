@@ -1,0 +1,25 @@
+Death Registration Form
+
+- Nature of Death: {Nature_of_Death}
+- Applicant's Name: {applicant_name}
+- Applicant's CNIC Number: {applicant_cnic}
+1. Deceased's Name: {deceased_name}
+2. Deceased's CNIC Number: {deceased_cnic}
+3. Relation with Deceased: {relation_with_deceased}
+4. Religion: {religion}
+5. Father's Name: {father_name}
+6. Father's CNIC Number: {father_cnic}
+7. Mother's Name: {mother_name}
+8. Mother's CNIC Number: {mother_cnic}
+9. Husband's Name: {husband_name}
+10. Husband's CNIC Number: {husband_cnic}
+11. Date of Birth: {date_of_birth}
+12. Place of Death: {place_of_death}
+13. Date of Death: {date_of_death}
+14. Name of Graveyard: {graveyard_name}
+15. Address: {address}
+
+16. Gender: {gender}
+17. Doctor's Name: {doctor_name}
+18. District: {district}
+19. Sign of Applicant: ____________
