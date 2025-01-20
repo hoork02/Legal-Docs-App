@@ -1,0 +1,27 @@
+Birth Registration Application Form
+
+- Applicant Name: {Applicant Name}
+- Applicant CNIC No.: {Applicant CNIC No.}
+- Child Name: {Child Name}
+- Relation: {Relation}
+
+1. Gender: {Gender}
+2. Religion: {Religion}
+3. Father's Name: {Father's Name}
+4. Father's CNIC No.: {Father's CNIC No.}
+5. Mother's Name: {Mother's Name}
+6. Mother's CNIC No.: {Mother's CNIC No.}
+7. Grandfather's Name: {Grandfather's Name}
+8. Grandfather's CNIC No.: {Grandfather's CNIC No.}
+9. District of Birth: {District of Birth}
+10. Father's Occupation: {Father's Occupation}
+11. Vaccinated: {Vaccinated}
+12. Disability: {Disability}
+13. Address: {Address}
+14. Date of Birth: {Date of Birth}
+15. Place of Birth: {Place of Birth}
+16. Date of Registration: {Date of Registration}
+17. Mobile Number: {Mobile Number}
+
+Declaration:
+I hereby solemnly declare that all the above information is correct to the best of my knowledge and belief.
