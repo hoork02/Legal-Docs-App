@@ -1,0 +1,11 @@
+AFFIDAVIT
+
+I, {name}, S/o {father_name}, resident of {address}, do hereby solemnly affirm and declare as under:
+
+1. That I am residing in district Rawalpindi since {residence_since}.
+2. That I never migrated to India on or after 1st March 1947.
+3. That the particulars furnished by me in the application forms for the grant of domicile certificate are correct. That, I neither obtained nor shall obtain the same from any other district of Pakistan after having been granted this one.
+4. I, further affirm and declare that the contents of the above affidavit are true and correct to the best of my knowledge and belief, and nothing has been concealed therefrom.
+
+Deponent: __________________________
+NIC NO.: {nic}
