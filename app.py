@@ -5,6 +5,7 @@ from fpdf import FPDF
 import os
 import re
 
+
 # Load the model and tokenizer
 try:
     tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.2-1B")
@@ -27,16 +28,50 @@ def generate_text_with_transformers(prompt, max_length=500):
 
 # Save to PDF
 def save_to_pdf(content, output_pdf_path):
+    # Replace characters that cannot be encoded in latin-1
+    content = content.encode('latin-1', 'replace').decode('latin-1')
+
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=12)
+
     pdf.multi_cell(0, 10, content)
     pdf.output(output_pdf_path)
 
+
+# User Authentication
+class UserAuth:
+    def __init__(self):
+        self.user_file = "users.txt"
+        if not os.path.exists(self.user_file):
+            with open(self.user_file, "w") as file:
+                file.write("")
+
+    def signup(self, cnic, username):
+        with open(self.user_file, "r") as file:
+            users = file.readlines()
+        for user in users:
+            stored_cnic, _ = user.strip().split(",")
+            if stored_cnic == cnic:
+                return False, "CNIC already exists. Please log in."
+        with open(self.user_file, "a") as file:
+            file.write(f"{cnic},{username}\n")
+        return True, "Signup successful. You can now log in."
+
+    def login(self, cnic, username):
+        with open(self.user_file, "r") as file:
+            users = file.readlines()
+        for user in users:
+            stored_cnic, stored_username = user.strip().split(",")
+            if stored_cnic == cnic and stored_username == username:
+                return True, "Login successful."
+        return False, "Invalid CNIC or username."
+
 # Form Application
 class FormApp:
-    def __init__(self, root):
+    def __init__(self, root, user_auth):
         self.root = root
+        self.user_auth = user_auth
         self.root.title("Form Filling Application")
         self.root.geometry("600x700")
 
@@ -44,11 +79,48 @@ class FormApp:
             "Affidavit": "prompt.txt",
             "Birth Registration": "birth.txt",
             "Death Registration": "death.txt",
+            "Domicile Form":"domicile.txt",
         }
 
-        self.create_widgets()
+        self.logged_in = False
+        self.create_login_widgets()
 
-    def create_widgets(self):
+    def create_login_widgets(self):
+        for widget in self.root.winfo_children():
+            widget.destroy()
+
+        tk.Label(self.root, text="Login / Signup", font=("Arial", 16)).pack(pady=10)
+
+        tk.Label(self.root, text="CNIC:", font=("Arial", 12)).pack(pady=5)
+        self.cnic_var = tk.StringVar()
+        tk.Entry(self.root, textvariable=self.cnic_var, width=30).pack(pady=5)
+
+        tk.Label(self.root, text="Username:", font=("Arial", 12)).pack(pady=5)
+        self.username_var = tk.StringVar()
+        tk.Entry(self.root, textvariable=self.username_var, width=30).pack(pady=5)
+
+        tk.Button(self.root, text="Login", command=self.login).pack(pady=5)
+        tk.Button(self.root, text="Signup", command=self.signup).pack(pady=5)
+
+    def login(self):
+        cnic = self.cnic_var.get()
+        username = self.username_var.get()
+        success, message = self.user_auth.login(cnic, username)
+        messagebox.showinfo("Login", message)
+        if success:
+            self.logged_in = True
+            self.create_form_widgets()
+
+    def signup(self):
+        cnic = self.cnic_var.get()
+        username = self.username_var.get()
+        success, message = self.user_auth.signup(cnic, username)
+        messagebox.showinfo("Signup", message)
+
+    def create_form_widgets(self):
+        for widget in self.root.winfo_children():
+            widget.destroy()
+
         tk.Label(self.root, text="Form Filling Application", font=("Arial", 16)).pack(pady=10)
 
         tk.Label(self.root, text="Select a Form:", font=("Arial", 12)).pack(pady=5)
@@ -58,7 +130,6 @@ class FormApp:
         self.form_dropdown.pack(pady=5)
         self.form_dropdown.bind("<<ComboboxSelected>>", self.load_form_template)
 
-        # Scrollable Frame
         self.canvas = tk.Canvas(self.root, width=580)
         self.scrollable_frame = ttk.Frame(self.canvas)
 
@@ -89,7 +160,6 @@ class FormApp:
 
         placeholders = detect_placeholders(self.prompt_template)
 
-        # Clear existing input fields
         for widget in self.scrollable_frame.winfo_children():
             widget.destroy()
 
@@ -131,8 +201,9 @@ class FormApp:
 
 # Main Application
 def main():
+    user_auth = UserAuth()
     root = tk.Tk()
-    app = FormApp(root)
+    app = FormApp(root, user_auth)
     root.mainloop()
 
 if __name__ == "__main__":
